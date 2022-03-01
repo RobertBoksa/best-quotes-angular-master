@@ -1,4 +1,3 @@
-import { Quote } from '@angular/compiler';
 import { Component } from '@angular/core';
 import { QUOTES } from './models/data-base';
 import { Quotation } from './models/quotation';
@@ -9,27 +8,25 @@ import { Quotation } from './models/quotation';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  showForm = false;
   quotes: Quotation[] = [];
-  quotation: Quotation = {author: '', sentence: '', votes: 0};
-  
   constructor() {
     this.quotes = QUOTES;
-  }
-
-  onSwitchForm(): void {
-    this.showForm = !this.showForm;
-  }
-
-  addQuotation() {
-    this.quotes.unshift(this.quotation);
-    this.quotation  = {author: '', sentence: '', votes: 0};
   }
 
   addVote(quotation: Quotation, value: number) {
     quotation.votes += value;
   }
 
+  bestQuotes() {
+    return this.quotes.filter(q => q.votes > 0);
+  }
 
+  worstQuotes() {
+    return this.quotes.filter(q => q.votes < 0);
+  }
+
+  onNewQuotation(quotation: Quotation) {
+    this.quotes.unshift(quotation);
+  }
 
 }

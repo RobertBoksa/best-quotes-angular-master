@@ -1,23 +1,15 @@
-<nav>
-  <div class="nav-wrapper teal darken-3">
-    <span class="brand-logo center">Najlepsze cytaty</span>
-  </div>
-</nav>
+<app-navbar title="Najlepsze cytaty"></app-navbar>
+
 <div class="container q-container">
-  <button class="btn-floating teal add-button" (click)="onSwitchForm()">
-    <i class="material-icons">add</i>
-  </button>
-  <div class="row edit-row" [class.drawer]="showForm">
-    <div class="input-field col s4">
-      <input type="text" placeholder="Autor" [(ngModel)]="quotation.author">
-    </div>
-    <div class="input-field col s6">
-      <input type="text" placeholder="Cytat" [(ngModel)]="quotation.sentence">
-    </div>
-    <div class="input-field col s2">
-      <button class="btn small" (click)="addQuotation()">Dodaj</button>
-    </div>
-  </div>
+  <app-button 
+  customClasses="btn-floating teal add-button" 
+  (clickButton)="form.onSwitchForm()"
+  >
+  <i class="material-icons">add</i>
+  </app-button>
+
+  <app-form #form (newQuotation)="onNewQuotation($event)"></app-form>
+
   <div class="row">
     <div class="col s8">
       <div class="row">
@@ -32,45 +24,27 @@
             </div>
             <div class="card-action right-align">
               <span class="badge grey darken-2 left white-text">{{quotation.votes}}</span>
-              <button class="btn blue mr-5">
-                <i class="material-icons" (click)="addVote(quotation, +1)">exposure_plus_1</i>
-              </button>
-              <button class="btn red">
-                <i class="material-icons" (click)="addVote(quotation, -1)">exposure_neg_1</i>
-              </button>
+              
+              <app-button
+              customClasses="btn blue mr-5"
+              (clickButton)="addVote(quotation, +1)">
+              <i class="material-icons">exposure_plus_1</i>
+              </app-button>
+
+              <app-button
+              customClasses="btn red"
+              (clickButton)="addVote(quotation, -1)">
+              <i class="material-icons">exposure_neg_1</i>
+              </app-button>
+             
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="col s4">
-
-      <div class="col s12">
-        <h5>Najlepiej ocenione</h5>
-        <div class="collection">
-          <ng-container *ngFor="let quotation of quotes">
-             <p class="collection-item" *ngIf="quotation.votes > 0">
-            <span class="blue lighten-4 badge">{{quotation.votes}}</span>
-            {{quotation.sentence}}<br>
-            <span class="blue-text">{{quotation.author}}</span>
-          </p>
-          </ng-container>
-        </div>
-      </div>
-
-      <div class="col s12">
-        <h5>Najgorsze</h5>
-        <div class="collection">
-          <ng-container *ngFor="let quotation of quotes">
-            <p class="collection-item" *ngIf="quotation.votes < 0">
-           <span class="blue lighten-4 badge">{{quotation.votes}}</span>
-           {{quotation.sentence}}<br>
-           <span class="blue-text">{{quotation.author}}</span>
-         </p>
-         </ng-container>
-        
-        </div>
-      </div>
+      <app-ranking [quotes]="bestQuotes()" title="Najlepsze"></app-ranking>
+      <app-ranking [quotes]="worstQuotes()" title="Najgorsze"></app-ranking>
     </div>
   </div>
 </div>
